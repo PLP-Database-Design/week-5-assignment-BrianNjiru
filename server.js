@@ -43,6 +43,25 @@ app.get('/api/providers', (req, res) => {
 
 // Question 3 goes here
 
+app.get('/api/patient', (req, res) => {
+  const { first_name } = req.query;  // Get the first_name query parameter
+  
+  if (!first_name) {
+    return res.status(400).json({ error: 'Please provide a first_name query parameter' });
+  }
+
+  const query = 'SELECT * FROM patients WHERE first_name = ?';
+
+  connection.query(query, [first_name], (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: 'Error fetching data from the database' });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ message: 'No patients found with the given first name' });
+    }
+    res.json(results);  // Send back the filtered patients
+  });
+});
 
 // Question 4 goes here
 
