@@ -65,6 +65,25 @@ app.get('/api/patient', (req, res) => {
 
 // Question 4 goes here
 
+app.get('/api/provider', (req, res) => {
+  const {specialty} = req.query;
+  if (!specialty) {
+    return res.status(400).json({error: 'Please provide a specialty query parameter'});
+  }
+
+  const query = 'SELECT * FROM providers WHERE provider_specialty = ?';
+
+  connection.query(query, [specialty], (error, results) => {
+    if (error) {
+      return res.status(500).json({error: 'Error fetching data from the database'});
+    }
+    if (results.length === 0) {
+      return res.status(404).json({message: 'No patients found with the given first name'})
+    }
+    res.json(results);
+
+  })
+})
 
 
 // listen to the server
