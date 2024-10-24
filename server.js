@@ -31,7 +31,15 @@ app.get('/api/patients', (req, res) => {
 })
 
 // Question 2 goes here
-
+app.get('/api/providers', (req, res) => {
+  const query = 'SELECT first_name, last_name, provider_specialty FROM providers limit 5;'
+  connection.query(query,(error,results) => {
+    if (error) {
+      return res.status(500).json({error: 'Error fetching database'})
+    }
+    res.json(results);
+  })
+})
 
 // Question 3 goes here
 
