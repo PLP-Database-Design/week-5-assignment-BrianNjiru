@@ -20,7 +20,15 @@ connection.connect((err) => {
   });
   
 // Question 1 goes here
-
+app.get('/api/patients', (req, res) => {
+    const query = 'SELECT patient_id, first_name, last_name, date_of_birth FROM patients;'
+    connection.query(query,(error,results) => {
+      if (error) {
+        return res.status(500).json({error: 'Error fetching database'})
+      }
+      res.json(results);
+    })
+})
 
 // Question 2 goes here
 
